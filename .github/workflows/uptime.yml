@@ -1,0 +1,63 @@
+name: Uptime
+
+# Checks the public site every 15 minutes. Opens an "outage" issue when it's
+# down and closes it when it's back. Needs the repository secret PUBLIC_URL
+# (a secret, so the address stays out of this public repo's logs).
+# Note: GitHub pauses scheduled workflows after 60 days without commits here.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+concurrency: uptime
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe the site
+        id: probe
+        env:
+          URL: ${{ secrets.PUBLIC_URL }}
+        run: |
+          test -n "$URL" || { echo "PUBLIC_URL secret is not set"; exit 1; }
+          ok=false
+          for attempt in 1 2 3; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$URL" || true)
+            echo "attempt $attempt: HTTP $code"
+            if [ "$code" -ge 200 ] 2>/dev/null && [ "$code" -lt 400 ]; then ok=true; break; fi
+            sleep 20
+          done
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+      - name: Open or close the outage issue
+        uses: actions/github-script@v8
+        env:
+          OK: ${{ steps.probe.outputs.ok }}
+          CODE: ${{ steps.probe.outputs.code }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const title = "RouteBean is down";
+            try {
+              await github.rest.issues.createLabel({ owner, repo, name: "outage", color: "d73a4a" });
+            } catch (error) {
+              if (error.status !== 422) throw error;
+            }
+            const { data: open } = await github.rest.issues.listForRepo({ owner, repo, state: "open", labels: "outage" });
+            const current = open.find((issue) => issue.title === title);
+            if (process.env.OK === "true") {
+              if (current) {
+                await github.rest.issues.createComment({ owner, repo, issue_number: current.number, body: "Back up." });
+                await github.rest.issues.update({ owner, repo, issue_number: current.number, state: "closed", state_reason: "completed" });
+              }
+              return;
+            }
+            const detail = `The site didn't answer after three tries (last response: ${process.env.CODE || "none"}).`;
+            if (current) return;
+            await github.rest.issues.create({ owner, repo, title, body: detail, labels: ["outage"], assignees: [owner] });

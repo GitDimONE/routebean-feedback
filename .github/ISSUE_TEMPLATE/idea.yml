@@ -1,0 +1,14 @@
+name: Idea
+description: Something you wish RouteBean did, or did differently.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would it help you?

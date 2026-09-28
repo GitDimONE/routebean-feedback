@@ -1,0 +1,28 @@
+name: Something broke
+description: Something didn't work, looked wrong, or was confusing.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, and what did you see? A screenshot helps a lot.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+  - type: input
+    id: where
+    attributes:
+      label: Where in the app?
+      placeholder: e.g. Garage, adding a bike, booking a service
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options:
+        - Phone
+        - Tablet
+        - Computer
