@@ -31,9 +31,11 @@ test('dry run has no writes and repeat setup reuses an existing public roadmap',
   const dry = mock([repo, empty]);
   assert.match(setupRoadmap(dry.run, { dryRun: true }).plan, /No issues/);
   assert.equal(dry.calls.length, 2);
-  const fixture = mock([repo, { projects: [{ title: 'RouteBean roadmap', number: 4 }], totalCount: 1 }, { public: true, closed: false, url: 'https://github.com/users/GitDimONE/projects/4' }]);
+  const fixture = mock([repo, { projects: [{ title: 'RouteBean roadmap', number: 4 }], totalCount: 1 }, { number: 4, public: true, closed: false, url: 'https://github.com/users/GitDimONE/projects/4' }, null]);
   assert.equal(setupRoadmap(fixture.run).reused, true);
-  assert.equal(fixture.calls.length, 3);
+  assert.equal(fixture.calls.length, 4);
+  assert.equal(fixture.calls[3][1], 'link');
+  assert.equal(fixture.calls[3].at(-1), 'GitDimONE/routebean-feedback');
 });
 
 test('creates only an empty roadmap and links only the public feedback repository', () => {

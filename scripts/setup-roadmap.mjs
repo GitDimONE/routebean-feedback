@@ -18,6 +18,7 @@ export function setupRoadmap(run, { dryRun = false } = {}) {
   if (matches.length) {
     const project = run(['project', 'view', String(matches[0].number), '--owner', owner, '--format', 'json']);
     if (!project.public || project.closed) throw new Error('Existing roadmap is private or closed; review it manually before changing access.');
+    if (!dryRun) run(['project', 'link', String(project.number), '--owner', owner, '--repo', repository]);
     return { url: project.url, reused: true };
   }
   if (dryRun) return { plan: `Create an empty public ${title} linked only to ${repository}. No issues will be imported.` };
