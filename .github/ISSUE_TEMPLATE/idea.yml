@@ -1,7 +1,13 @@
-name: Idea
+name: Suggest a feature
 description: Something you wish RouteBean did, or did differently.
-labels: [enhancement]
+labels: [enhancement, needs-triage]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        English and Russian are welcome. Можно писать по-русски.
+        This repository is public. Remove personal details, passwords, tokens, and private screenshots.
+        For a private report, use Help → Send feedback in RouteBean and keep visibility set to Private.
   - type: textarea
     id: idea
     attributes:
@@ -12,3 +18,10 @@ body:
     id: why
     attributes:
       label: Why would it help you?
+  - type: checkboxes
+    id: public-report
+    attributes:
+      label: Public visibility
+      options:
+        - label: I understand this report and its attachments will be public, and have removed private information.
+          required: true
