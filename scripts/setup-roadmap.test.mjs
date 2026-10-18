@@ -8,19 +8,19 @@ function mock(responses) {
   return { run, calls };
 }
 const repo = { private: false, has_issues: true, archived: false };
-const empty = { projects: [], totalCount: 0 };
+const empty = { nodes: [], totalCount: 0 };
 
 test('refuses private repository and existing private roadmap without changing access', () => {
   const privateRepo = mock([{ ...repo, private: true }]);
   assert.throws(() => setupRoadmap(privateRepo.run), /public feedback/);
   assert.equal(privateRepo.calls.length, 1);
-  const privateProject = mock([repo, { projects: [{ title: 'RouteBean roadmap', number: 1 }], totalCount: 1 }, { public: false }]);
+  const privateProject = mock([repo, { nodes: [{ title: 'RouteBean roadmap', number: 1 }], totalCount: 1 }, { public: false }]);
   assert.throws(() => setupRoadmap(privateProject.run), /review it manually/);
   assert.ok(privateProject.calls.every(args => !['create', 'edit', 'link'].includes(args[1])));
 });
 
 test('incomplete or ambiguous listing cannot create duplicate Projects', () => {
-  for (const list of [{ projects: [], totalCount: 1 }, { projects: [{ title: 'RouteBean roadmap' }, { title: 'RouteBean roadmap' }], totalCount: 2 }]) {
+  for (const list of [{ nodes: [], totalCount: 1 }, { nodes: [{ title: 'RouteBean roadmap' }, { title: 'RouteBean roadmap' }], totalCount: 2 }]) {
     const fixture = mock([repo, list]);
     assert.throws(() => setupRoadmap(fixture.run), /Incomplete|Multiple/);
     assert.equal(fixture.calls.length, 2);
@@ -31,7 +31,7 @@ test('dry run has no writes and repeat setup reuses an existing public roadmap',
   const dry = mock([repo, empty]);
   assert.match(setupRoadmap(dry.run, { dryRun: true }).plan, /No issues/);
   assert.equal(dry.calls.length, 2);
-  const fixture = mock([repo, { projects: [{ title: 'RouteBean roadmap', number: 4 }], totalCount: 1 }, { number: 4, public: true, closed: false, url: 'https://github.com/users/GitDimONE/projects/4' }, null]);
+  const fixture = mock([repo, { nodes: [{ title: 'RouteBean roadmap', number: 4 }], totalCount: 1 }, { number: 4, public: true, closed: false, url: 'https://github.com/users/GitDimONE/projects/4' }, null]);
   assert.equal(setupRoadmap(fixture.run).reused, true);
   assert.equal(fixture.calls.length, 4);
   assert.equal(fixture.calls[3][1], 'link');

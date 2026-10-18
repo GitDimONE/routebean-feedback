@@ -14,7 +14,8 @@
 
 ## Public GitHub Project
 
-The public issue list filtered by `roadmap` is usable before the Project is set up.
+The live [RouteBean roadmap](https://github.com/users/GitDimONE/projects/2) is public.
+The setup command below safely reuses it.
 Project creation requires a GitHub session with Projects write access. With the
 GitHub CLI, the account owner can authorize it using `gh auth refresh -s project`.
 Do not change implementation repository visibility or grant the feedback broker
@@ -31,8 +32,7 @@ field: **Todo** (planned), **In Progress**, **Done** (shipped). Add only reviewe
 public issues carrying `roadmap`; leave automatic import disabled. No invented
 commitments or historical test/outage entries are needed.
 
-Once created, replace the Roadmap entries link in README with its actual URL.
-Check the Project signed out: only approved public-facing entries should appear.
+Check the Project signed out after changes: only approved public-facing entries should appear.
 Keep private implementation issues outside this Project, even though GitHub
 hides private-repository items from visitors without access.
 

@@ -6,7 +6,7 @@ English and Russian are welcome. Можно писать по-русски.
 - [Report a problem](https://github.com/GitDimONE/routebean-feedback/issues/new?template=problem.yml)
 - [Suggest a feature](https://github.com/GitDimONE/routebean-feedback/issues/new?template=idea.yml)
 - [Browse existing feedback](https://github.com/GitDimONE/routebean-feedback/issues)
-- [Roadmap entries](https://github.com/GitDimONE/routebean-feedback/issues?q=is%3Aissue%20label%3Aroadmap)
+- [Public roadmap](https://github.com/users/GitDimONE/projects/2)
 
 This repository and its attachments are public. Remove personal information,
 passwords, access tokens, and private screenshots before submitting. For a private

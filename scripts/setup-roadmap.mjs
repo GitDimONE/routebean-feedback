@@ -11,9 +11,11 @@ export function setupRoadmap(run, { dryRun = false } = {}) {
   if (metadata.private !== false || metadata.archived || !metadata.has_issues) {
     throw new Error('Expected the active public feedback repository; no changes made.');
   }
-  const result = run(['project', 'list', '--owner', owner, '--limit', '1000', '--format', 'json']);
-  if (result.projects.length !== result.totalCount) throw new Error('Incomplete Project list; refusing to create a duplicate.');
-  const matches = result.projects.filter(project => project.title === title);
+  const result = run(['api', 'graphql', '-f',
+    'query=query { user(login: "GitDimONE") { projectsV2(first:100) { totalCount pageInfo { hasNextPage } nodes { number title } } } }',
+    '--jq', '.data.user.projectsV2']);
+  if (result.pageInfo?.hasNextPage || result.nodes.length !== result.totalCount) throw new Error('Incomplete Project list; refusing to create a duplicate.');
+  const matches = result.nodes.filter(project => project.title === title);
   if (matches.length > 1) throw new Error('Multiple matching Projects; select the intended Project manually.');
   if (matches.length) {
     const project = run(['project', 'view', String(matches[0].number), '--owner', owner, '--format', 'json']);
