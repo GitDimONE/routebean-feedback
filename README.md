@@ -13,10 +13,10 @@ passwords, access tokens, and private screenshots before submitting. For a priva
 report, use **Help → Send feedback** in RouteBean and keep visibility **Private**.
 You do not need a GitHub account to send feedback from the app.
 
-New reports await review (`needs-triage`). Maintainers may request more detail
-(`needs-info`), mark work `planned` or `in-progress`, and mark released work
-`shipped`. A report is a request, not a promise or a delivery date. Closed reports
-may also be duplicates or declined; read the closing explanation.
+Error reports go through private evidence review and Jev-assisted triage before
+becoming a proposed fix. Proposals require owner review before implementation;
+public responses, statuses, roadmap entries, and release announcements require
+explicit owner confirmation. Russian reports follow the same workflow.
 
 The `roadmap` label identifies deliberately selected, public product entries.
 An empty roadmap means no items have been published yet. Private reports and

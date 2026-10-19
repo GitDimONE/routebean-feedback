@@ -1,6 +1,6 @@
 name: Report a problem
 description: Something didn't work, looked wrong, or was confusing.
-labels: [bug, needs-triage]
+labels: [bug]
 body:
   - type: markdown
     attributes:

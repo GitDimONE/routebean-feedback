@@ -1,6 +1,6 @@
 name: Suggest a feature
 description: Something you wish RouteBean did, or did differently.
-labels: [enhancement, needs-triage]
+labels: [enhancement]
 body:
   - type: markdown
     attributes:
