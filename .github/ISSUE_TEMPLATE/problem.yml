@@ -1,14 +1,28 @@
-name: Something broke
+name: Report a problem
 description: Something didn't work, looked wrong, or was confusing.
 labels: [bug]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        English and Russian are welcome. Можно писать по-русски.
+        This repository is public. Remove personal details, passwords, tokens, and private screenshots.
+        For a private report, use Help → Send feedback in RouteBean and keep visibility set to Private.
   - type: textarea
     id: what
     attributes:
       label: What happened?
-      description: What did you do, and what did you see? A screenshot helps a lot.
+      description: Describe what you did and what you saw. A cropped screenshot can help; remove private details first.
     validations:
       required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open…
+        2. Choose…
+        3. See…
   - type: textarea
     id: expected
     attributes:
@@ -26,3 +40,10 @@ body:
         - Phone
         - Tablet
         - Computer
+  - type: checkboxes
+    id: public-report
+    attributes:
+      label: Public visibility
+      options:
+        - label: I understand this report and its attachments will be public, and have removed private information.
+          required: true
